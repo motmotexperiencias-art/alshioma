@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALSHIOMA | Investment Grade Project</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* --- VARIABLES DE DISEÑO (DARK LUXURY) --- */
+        :root {
+            --earth: #FF5722;      /* Terracota Vibrante */
+            --gold: #FFD700;       /* Dorado Brillante */
+            --dark-bg: #121212;    /* Negro Profundo */
+            --panel-bg: #1E1E1E;   /* Gris Panel */
+            --text-main: #E0E0E0;  /* Blanco Suave */
+            --text-dim: #A0A0A0;   /* Gris Texto */
+        }
+
+        /* --- BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- PANTALLA DE BLOQUEO (LOCK SCREEN) --- */
+        #lock-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: radial-gradient(circle at center, #222 0%, #000 70%);
+        }
+
+        .lock-content { text-align: center; animation: fadeIn 1.5s ease; }
+        .lock-input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--gold);
+            color: var(--gold);
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            letter-spacing: 5px;
+            outline: none;
+            width: 300px;
+            text-transform: uppercase;
+        }
+        .lock-input::placeholder { color: #555; letter-spacing: 1px; font-size: 1rem; }
+        .lock-btn {
+            margin-top: 20px;
+            background: var(--earth);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .lock-btn:hover { background: var(--gold); color: black; }
+        .error-msg { color: red; margin-top: 10px; font-size: 0.8rem; display: none; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+
+        /* --- ESTILOS GENERALES --- */
+        h1, h2, h3, h4 { 
+            font-family: 'Cinzel', serif; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            color: var(--gold);
+        }
+        
+        strong { color: white; font-weight: 700; }
+
+        section { padding: 80px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .container { max-width: 1200px; margin: 0 auto; position: relative; }
+        
+        /* --- BOTONES --- */
+        .btn-main {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--earth), #bf360c);
+            color: white;
+            padding: 18px 50px;
+            text-decoration: none;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(216, 67, 21, 0.4);
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .btn-main:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 0 40px rgba(216, 67, 21, 0.7);
+            background: transparent;
+            border-color: var(--earth);
+            color: var(--earth);
+        }
+
+        /* --- HERO SECTION --- */
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-bg {
+            position: absolute;
+            top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            transform: translate(-50%, -50%);
+            z-index: -2;
+            filter: brightness(0.3) contrast(1.2);
+        }
+        
+        .overlay-gradient {
+            position: absolute;
+            top:0; left:0; width:100%; height:100%;
+            background: radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(18,18,18,1) 90%);
+            z-index: -1;
+        }
+
+        .hero-title { 
+            font-size: 5rem; 
+            margin-bottom: 10px; 
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            background: -webkit-linear-gradient(#fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-subtitle { font-size: 1.2rem; letter-spacing: 4px; margin-bottom: 40px; color: var(--earth); font-weight: 600; }
+
+        /* --- TRAYECTORIA & ESTADÍSTICAS --- */
+        .track-record {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .track-card {
+            background: var(--panel-bg);
+            padding: 30px;
+            border-left: 3px solid var(--earth);
+            transition: 0.3s;
+        }
+        .track-card:hover { background: #252525; transform: translateY(-5px); }
+        .big-number { font-size: 3rem; font-weight: 800; color: white; display: block; line-height: 1; margin-bottom: 10px; }
+
+        /* --- GRÁFICOS Y CANVAS (ESTILO DARK) --- */
+        .chart-wrapper {
+            background: var(--panel-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .route-canvas-container {
+            position: relative;
+            width: 100%;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        canvas#routeCanvas {
+            width: 100%;
+            height: 400px;
+            cursor: crosshair;
+        }
+
+        /* --- IMAGEN CON MARCO (PASSEPARTOUT) --- */
+        .framed-image-container {
+            margin: 80px 0;
+            display: flex;
+            justify-content: center;
+        }
+        .framed-image {
+            max-width: 100%;
+            border: 2cm solid #f0f0f0; /* El marco blanco solicitado */
+            box-shadow: 0 0 50px rgba(0,0,0,0.8); /* Sombra para resaltar */
+            display: block;
+        }
+
+        /* --- MAPA INTERACTIVO (SVG) --- */
+        .map-interactive-box {
+            position: relative; 
+            width: 100%; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5); 
+            background: white; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            border: 1px solid #cfd8dc;
+            color: #333;
+        }
+        svg { width: 100%; height: auto; display: block; background-color: #fff; }
+        .zona { cursor: pointer; transition: all 0.3s ease; opacity: 0.95; }
+        .zona:hover { opacity: 1; stroke: #263238; stroke-width: 2px; filter: brightness(1.05); }
+        .fase1 { fill: #fff59d; stroke: #f9a825; stroke-width: 1; } 
+        .fase1-propio { fill: #ffcc80; stroke: #e65100; stroke-width: 2; } 
+        .fase1-atras { fill: #fff9c4; stroke: #fbc02d; stroke-width: 1; stroke-dasharray: 4,2; } 
+        .fase2 { fill: #ffab91; stroke: #d84315; stroke-width: 1; } 
+        .fase3 { fill: #bbdefb; stroke: #1565c0; stroke-width: 1; } 
+        .reserva { fill: #c8e6c9; stroke: #388e3c; stroke-width: 1; } 
+        .svg-text { pointer-events: none; user-select: none; }
+        .label-medida { font-size: 10px; fill: #546e7a; font-weight: 700; }
+        .label-zona { font-size: 11px; fill: #263238; font-weight: 800; text-anchor: middle; font-family: Arial, sans-serif; }
+        .titulo-fase { font-size: 14px; font-weight: 900; opacity: 0.8; }
+
+        /* --- TOOLTIP --- */
+        #tooltip {
+            position: fixed; display: none;
+            background: rgba(255, 255, 255, 0.98);
+            border-left: 6px solid #d84315;
+            padding: 12px 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+            pointer-events: none; z-index: 9999;
+            width: 260px; font-size: 13px;
+            border-radius: 0 6px 6px 0; text-align: left; color: #333;
+        }
+        #tooltip h3 { margin: 0 0 8px 0; color: #b71c1c; font-size: 15px; border-bottom: 1px solid #eee; padding-bottom: 5px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;}
+        #tooltip .dato { display: flex; justify-content: space-between; margin: 4px 0; border-bottom: 1px dashed #eee; padding-bottom: 2px;}
+        #tooltip .label { color: #555; font-weight: 600; font-size: 11px;}
+        #tooltip .valor { color: #000; font-weight: 500; text-align: right; font-size: 12px;}
+        #tooltip .desc { margin-top: 10px; font-style: normal; color: #455a64; line-height: 1.4; font-size: 12px; background: #f5f5f5; padding: 8px; border-radius: 4px;}
+        #tooltip .precio { margin-top: 10px; font-weight: 900; color: #d84315; font-size: 18px; text-align: right; display: block; }
+
+        /* --- CALCULADORA DE INVERSIÓN (ESTILO DARK) --- */
+        .calculator-box {
+            background: #111;
+            border: 1px solid var(--earth);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(255, 87, 34, 0.1);
+        }
+        .calc-input { width: 100%; background: #222; border: 1px solid #444; color: white; padding: 10px; border-radius: 4px; margin-top: 5px; }
+        .calc-range { width: 100%; height: 5px; background: #444; outline: none; opacity: 0.7; transition: .2s; margin: 15px 0; }
+        .calc-range:hover { opacity: 1; }
+        
+        /* --- INVERSIÓN (FASES) --- */
+        .invest-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
+        .invest-card {
+            background: var(--panel-bg);
+            border: 1px solid #333;
+            padding: 40px 30px;
+            border-radius: 4px;
+            position: relative;
+            transition: 0.3s;
+        }
+        .invest-card:hover { transform: translateY(-10px); border-color: var(--earth); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .phase-tag { 
+            position: absolute; top: 0; right: 0; 
+            background: var(--earth); color: white; 
+            padding: 5px 15px; font-size: 0.8rem; font-weight: 800; 
+        }
+        .price-tag { font-size: 2.5rem; color: white; font-weight: 700; margin: 20px 0; display: block; }
+        .price-sub { font-size: 0.9rem; color: var(--text-dim); }
+        .benefit-list { list-style: none; margin-bottom: 30px; text-align: left; }
+        .benefit-list li { margin-bottom: 12px; position: relative; padding-left: 25px; color: #ccc; }
+        .benefit-list li::before { content: '▸'; color: var(--gold); position: absolute; left: 0; font-size: 1.2rem; }
+
+        /* --- ESTILOS EXTRA (MOTMOT & PESTEL INTEGRADOS) --- */
+        .motmot-section-container {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #333333;
+            padding: 60px 20px;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-radius: 8px;
+        }
+        .motmot-header { text-align: center; margin-bottom: 50px; }
+        .motmot-header h2 { font-size: 2.2rem; font-weight: 700; color: #1a1a1a; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .motmot-header .divider { width: 80px; height: 4px; background-color: #eec643; margin: 0 auto; border-radius: 2px; }
+        .motmot-grid { display: grid; grid-template-columns: 1fr; gap: 50px; }
+        @media (min-width: 900px) { .motmot-grid { grid-template-columns: 1fr 1fr; gap: 60px; } }
+        .motmot-card h3 { font-size: 1.5rem; color: #eec643; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .motmot-text { font-size: 1rem; color: #555; margin-bottom: 20px; text-align: justify; }
+        .motmot-highlight { background-color: #f9f9f9; border-left: 4px solid #eec643; padding: 15px 20px; margin: 20px 0; font-style: italic; color: #444; }
+        .motmot-list { list-style: none; padding: 0; }
+        .motmot-list li { position: relative; padding-left: 25px; margin-bottom: 12px; color: #444; }
+        .motmot-list li::before { content: "•"; color: #eec643; font-weight: bold; font-size: 1.5em; position: absolute; left: 0; top: -5px; }
+        .polo-box { background: #fdfdfd; border: 1px solid #eaeaea; padding: 15px; border-radius: 8px; margin-top: 15px; }
+        .polo-title { font-weight: bold; color: #222; display: block; margin-bottom: 5px; }
+
+        /* PESTEL DARK INTEGRADO */
+        .pestel-dark-section {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #1a1a1a; /* Fondo para el bloque PESTEL */
+            color: #e0e0e0;
+            padding: 60px 20px;
+            line-height: 1.7;
+            border-radius: 8px;
+            margin-top: 40px;
+            border: 1px solid #333;
+        }
+        .pestel-header h2 { color: #ffcc00; }
+        .pestel-grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
+        @media (min-width: 768px) { .pestel-grid { grid-template-columns: repeat(2, 1fr); } .pestel-card:last-child { grid-column: 1 / -1; } }
+        .pestel-card { background-color: #222; border: 1px solid #333; border-radius: 4px; padding: 30px; transition: transform 0.3s ease, border-color 0.3s ease; }
+        .pestel-card:hover { transform: translateY(-5px); border-color: #ffcc00; }
+        .card-icon { font-size: 2rem; margin-bottom: 15px; display: block; }
+        .pestel-card h3 { font-size: 1.4rem; color: #ffcc00; margin-bottom: 20px; text-transform: uppercase; font-weight: 600; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .pestel-text { font-size: 0.95rem; color: #cccccc; text-align: justify; margin-bottom: 15px; }
+        .highlight-gold { color: #ffe066; font-weight: bold; }
+        .data-point { background: rgba(255, 204, 0, 0.1); padding: 10px; border-left: 3px solid #ffcc00; margin: 15px 0; font-size: 0.9rem; }
+        .list-dark { list-style: none; padding: 0; margin-top: 15px; }
+        .list-dark li { margin-bottom: 10px; padding-left: 20px; position: relative; }
+        .list-dark li::before { content: "▹"; color: #ffcc00; position: absolute; left: 0; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .hero-title { font-size: 3rem; }
+            .track-record, .invest-grid, .asset-layout { grid-template-columns: 1fr; }
+            .asset-layout { display: flex; flex-direction: column-reverse; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="lock-screen">
+        <div class="lock-content">
+            <h1 style="color: var(--gold); font-size: 2rem;">ACCESO PRIVADO</h1>
+            <p style="color: #666; letter-spacing: 2px; margin-bottom: 30px;">INVERSIONISTAS CALIFICADOS</p>
+            <input type="password" id="passwordInput" class="lock-input" placeholder="CLAVE DE ACCESO">
+            <br>
+            <button onclick="checkPassword()" class="lock-btn">INGRESAR</button>
+            <p id="errorMsg" class="error-msg">ACCESO DENEGADO</p>
+        </div>
+    </div>
+
+    <div id="main-content" style="display: none;">
+        
+        <div id="tooltip"></div>
+
+        <section id="hero">
+            <video autoplay muted loop playsinline class="video-bg">
+                <source src="elementos/cañon.mp4" type="video/mp4">
+            </video>
+            <div class="overlay-gradient"></div>
+
+            <div class="container" style="z-index: 2;">
+                <video autoplay muted loop playsinline style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 20px;">
+                    <source src="elementos/log_animado.mp4" type="video/mp4">
+                </video>
+                
+                <h1 class="hero-title">ALSHIOMA</h1>
+                <p class="hero-subtitle">VISIÓN INTERNACIONAL • TRAYECTORIA • RESULTADOS</p>
+                
+                <div style="max-width: 700px; margin: 0 auto 50px auto;">
+                    <p style="font-size: 1.1rem; color: #ccc;">
+                        Bienvenido a una oportunidad de inversión sólida en el corazón de Santander. 
+                        Un proyecto liderado por <strong>Mot Mot Experiencias</strong>, con años de tracción y un enfoque claro: 
+                        Transformar el turismo de naturaleza en activos de alto valor.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section style="background: #0f0f0f;">
+            <div class="container">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center" style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px;">
+                    <div>
+                        <h4 style="color: var(--earth);">El Momento de Santander</h4>
+                        <h2>Proyección Geoparque UNESCO</h2>
+                        <p style="color: #aaa; margin-bottom: 20px;">
+                            Este estudio valida la viabilidad de adquirir y desarrollar un punto estratégico en el Cañón del Chicamocha. 
+                            Santander se posiciona como un activo de talla mundial.
+                        </p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div style="background: #222; padding: 20px; border-radius: 8px; border: 1px solid #333;">
+                                <div style="font-size: 2rem; color: var(--gold); font-weight: bold;">Top 3</div>
+                                <div style="font-size: 0.8rem; color: #888;">Destinos Naturaleza (Procolombia)</div>
+                            </div>
+                            <div style="background: #222; padding: 20px; border-radius: 8px; border: 1px solid #333;">
+                                <div style="font-size: 2rem; color: var(--gold); font-weight: bold;">+15%</div>
+                                <div style="font-size: 0.8rem; color: #888;">Crecimiento anual Trekking</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-wrapper">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ruta" style="background: var(--panel-bg);">
+            <div class="container">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <span style="color: var(--earth); letter-spacing: 2px;">EL ACTIVO ESTRATÉGICO</span>
+                    <h2>Ruta Villanueva - Jordán</h2>
+                </div>
+
+                <div class="route-canvas-container">
+                    <div style="position: absolute; top: 10px; left: 10px; color: #fff; background: rgba(0,0,0,0.7); padding: 5px; font-size: 10px;">
+                        ALSHIOMA, Refugio de montaña y escuela de caminantes
+                    </div>
+                    <canvas id="routeCanvas"></canvas>
+                </div>
+
+                <div id="routeInfoPanel" style="background: #111; padding: 20px; border-left: 4px solid var(--earth); display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 id="infoTitle" style="margin: 0; color: white;">Proyecto "Refugio de Montaña y Escuela de Caminantes" ALSHIOMA en el Corredor Villanueva - Jordán, Cañón del Chicamocha</h3>
+                        <p id="infoDesc" style="color: #888; font-size: 0.9rem;">Este documento constituye el estudio de viabilidad definitivo, técnico, financiero y ambiental, elaborado por Mot Mot Experiencias (RNT 90175), con el propósito de validar la inversión en un activo inmobiliario rural estratégico ubicado en el trayecto del Camino Real entre los municipios de Villanueva y Jordán Sube, en el departamento de Santander. El proyecto, denominado "Refugio de Montaña y Escuela de Caminantes", trasciende el modelo convencional de alojamiento turístico para constituirse en un nodo de infraestructura de soporte, educación patrimonial y regeneración ecosistémica, diseñado para capitalizar el inminente reconocimiento del Cañón del Chicamocha como Geoparque Mundial de la UNESCO.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section style="background: #fff; color: #000; text-align: center;">
+            <div class="container">
+                <h2 style="color: #000;">¿Por qué invertir?</h2>
+                <p>
+                La tesis central de este estudio sostiene que el corredor Villanueva-Jordán representa actualmente la oportunidad de arbitraje inmobiliario y turístico más significativa de la región. Mientras que los mercados vecinos de Barichara y La Mesa de Los Santos presentan signos de saturación y precios por metro cuadrado elevados, Villanueva conserva una estructura de costos de tierra accesible, a pesar de poseer una conectividad vial superior y ser la puerta de entrada a uno de los tramos de senderismo más espectaculares y técnicamente relevantes de los Andes orientales: el descenso al lecho del río Chicamocha a través de la red de caminos de Lengerke.
+                </p>
+
+<div style="text-align: center; margin: 40px 0;">
+    <img src="elementos/logo_y_lote.png" alt="ALSHIOMA" style="max-width: 100%; height: auto;">
+</div>
+
+<p>
+                El análisis, sustentado en datos oficiales de la Gobernación de Santander, Fontur y CITUR, revela un momento histórico para el turismo en la región, con récords de pernoctaciones y un crecimiento de visitantes extranjeros del 13.4% en el primer semestre de 2025. Sin embargo, la oferta de servicios en las rutas de trekking de larga distancia es deficitaria, obligando al caminante a travesías logísticamente complejas con poco o sin puntos intermedios de pernocta de calidad. La inversión propuesta no solo cierra esta brecha de mercado, sino que se alinea con las políticas de cooperación internacional francesa "De los Alpes a los Andes" y los objetivos de desarrollo sostenible del departamento, asegurando viabilidad política, comercial y operativa.</p>
+                
+                <div class="framed-image-container" style="flex-direction: column; align-items: center; gap: 20px;">
+                    <video autoplay muted loop playsinline style="max-width: 100%; border: 2cm solid #f0f0f0; box-shadow: 0 0 50px rgba(0,0,0,0.8);">
+                        <source src="elementos/cañon.mp4" type="video/mp4">
+                    </video>
+                    <img src="elementos/mapa.png" alt="Mapa General Chicamocha" class="framed-image">
+                </div>
+                <p style="font-size: 0.8rem; color: #666;">*Ruta de los caminos Ancestrales de los Andes Orientales - Promocionada por Destino Chicamocha y de los Alpes a los Andes.</p>
+
+                <div class="motmot-section-container">
+                    <div class="motmot-header">
+                        <h2>Identidad Corporativa y Justificación</h2>
+                        <div class="divider"></div>
+                    </div>
+                
+                    <div class="motmot-grid">
+                        <article class="motmot-card">
+                            <h3> Trayectoria y Filosofía</h3>
+                            <p class="motmot-text">
+                                Con cinco años de operación continua en el territorio santandereano, Mot Mot Experiencias ha consolidado un modelo de turismo que se aleja de la explotación masiva para abrazar el concepto de "Caminantes del Presente". Nuestra organización entiende el acto de caminar no como un deporte, sino como una herramienta de construcción de tejido social, salud preventiva y conexión territorial.
+                            </p>
+                            <div class="motmot-highlight">
+                                Esta filosofía ha permitido construir una base de clientes fidelizada que valora la autenticidad y el respeto irrestricto por las comunidades anfitrionas.
+                            </div>
+                            <p class="motmot-text">
+                                La transición hacia la "Escuela de Caminantes" como sede física permitirá:
+                            </p>
+                            <ul class="motmot-list">
+                                <li>Estandarizar protocolos de sostenibilidad y servicio.</li>
+                                <li>Crear un "laboratorio vivo" de turismo regenerativo (restauración ecológica y patrimonio).</li>
+                                <li>Estabilizar el flujo de caja mediante la diversificación de ingresos.</li>
+                            </ul>
+                        </article>
+                
+                        <article class="motmot-card">
+                            <h3>El Problema de Mercado</h3>
+                            <p class="motmot-text">
+                                El análisis de la oferta actual en el Cañón del Chicamocha evidencia una polarización crítica de la infraestructura que deja un vacío funcional para el caminante:
+                            </p>
+                            <div class="polo-box">
+                                <span class="polo-title">🏔️ Polo Alto (Barichara/Villanueva/Los Santos)</span>
+                                Alta concentración de hoteles boutique de descanso pasivo con tarifas elevadas.
+                            </div>
+                            <div class="polo-box">
+                                <span class="polo-title">🔥 Polo Bajo (Jordán Sube)</span>
+                                Oferta limitada y temperaturas extremas (+35°C) no aptas para todos los perfiles.
+                            </div>
+                            <p class="motmot-text" style="margin-top: 20px;">
+                                La Brecha: El flujo de caminantes entre Barichara, Jordán y Villanueva es una ruta en plena expansión, validada por el éxito de la oferta incipiente en la zona. Mot Mot Experiencias aprovecha esta proyección para establecer un Refugio de Montaña técnico, posicionándose como el nodo estratégico que el territorio requiere. Nos enfocamos en la recuperación de quienes culminan el ascenso desde el cañón y en la formación de quienes inician la ruta, complementando el crecimiento del destino con estándares de seguridad y cultura regenerativa.
+                            </p>
+                        </article>
+                    </div>
+
+                    <div style="margin: 40px 0; text-align: center;">
+                        <img src="elementos/hiking.jpg" alt="Hiking Experience" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="mapa" style="background: var(--dark-bg);">
+            <div class="container">
+                <div style="text-align: center; margin-bottom: 60px;">
+                    <h2>Master Plan Detallado</h2>
+                    <p>Zonificación de lotes y fases de inversión.</p>
+
+                    <div class="pestel-dark-section">
+                        <div class="pestel-header">
+                            <h2>Análisis del Entorno Macro (PESTEL)</h2>
+                            <p>Tendencias Regionales y Oportunidades Estratégicas</p>
+                        </div>
+                    
+                        <div class="pestel-grid">
+                            <article class="pestel-card">
+                                <span class="card-icon">🏛️</span>
+                                <h3>Entorno Político e Institucional</h3>
+                                <p class="pestel-text">
+                                    El clima político en Santander prioriza explícitamente el turismo de naturaleza a través del Plan "Santander Nos Une". Las metas gubernamentales apuntan a la consolidación de un <strong>Clúster de Turismo</strong> y mesas de trabajo internacionales para la gestión del destino Chicamocha.
+                                </p>
+                                <div class="data-point">
+                                    <strong>Factor Crítico de Éxito:</strong> La alianza "De los Alpes a los Andes" (Francia-Colombia) busca replicar el modelo europeo de refugios de montaña. Mot Mot se posiciona como el ejecutor privado ideal de esta visión, facilitando el acceso a fondos de cooperación.
+                                </div>
+                            </article>
+                    
+                            <article class="pestel-card">
+                                <span class="card-icon">📈</span>
+                                <h3>Entorno Económico y Cifras</h3>
+                                <p class="pestel-text">
+                                    La economía turística atraviesa una expansión robusta. En 2024 se superó el <span class="highlight-gold">millón de pernoctaciones</span>, confirmando la transición de destino de paso a destino de estancia.
+                                </p>
+                                <ul class="list-dark">
+                                    <li><strong>Internacionalización (+13.4%):</strong> El perfil del visitante extranjero coincide con el cliente objetivo del refugio (alto poder adquisitivo y booking anticipado).</li>
+                                    <li><strong>Conectividad:</strong> Nuevas rutas aéreas y frecuencias directas reducen barreras de acceso.</li>
+                                    <li><strong>Inversión Pública:</strong> Fontur prioriza corredores como la Ruta Libertadora.</li>
+                                </ul>
+                            </article>
+                    
+                            <article class="pestel-card">
+                                <span class="card-icon">🌍</span>
+                                <h3>Entorno Sociocultural (Efecto Geoparque)</h3>
+                                <p class="pestel-text">
+                                    La candidatura a <strong>Geoparque Mundial UNESCO</strong> es el vector de transformación más potente. A diferencia de una reserva estricta, promueve el desarrollo económico local. La designación genera una "Marca de Calidad" que atrae geoturistas y desestacionaliza la demanda.
+                                </p>
+                                <p class="pestel-text">
+                                    Al incluir una "Escuela de Caminantes", el proyecto se alinea con el pilar de <em>Geoeducación</em>, convirtiendo activos geológicos en valor turístico.
+                                </p>
+                            </article>
+                    
+                            <article class="pestel-card">
+                                <span class="card-icon">☀️</span>
+                                <h3>Entorno Tecnológico y Energético</h3>
+                                <p class="pestel-text">
+                                    La vecina planta "Celsia Solar Chicamocha" valida científicamente la alta irradiación solar de la zona. Esto hace viable un modelo energético <strong>mixto fotovoltaico</strong> para el Refugio.
+                                </p>
+                                <div class="data-point">
+                                    Sumado a la cobertura de internet en la zona, el refugio puede captar al mercado de "nómadas digitales" para estancias largas de trabajo remoto en la naturaleza.
+                                </div>
+                            </article>
+                    
+                            <article class="pestel-card">
+                                <span class="card-icon">🌿</span>
+                                <h3>Entorno Ambiental y Normativo (DRMI)</h3>
+                                <p class="pestel-text">
+                                    El Cañón del Chicamocha es un ecosistema sensible protegido bajo la figura de <strong>Distrito Regional de Manejo Integrado (DRMI)</strong>. La zonificación es estricta, lo cual representa una ventaja competitiva oculta:
+                                </p>
+                                <p class="pestel-text">
+                                    <span class="highlight-gold">La Oportunidad:</span> La normativa exige construcciones de bajo impacto y armonía paisajística. Esto protege la inversión de Mot Mot al impedir futuros megaproyectos vecinos que degraden el paisaje, garantizando la exclusividad de las vistas a perpetuidad.
+                                </p>
+                            </article>
+                        </div>
+                    </div>
+                    </div>
+
+                <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 50px; align-items: start; margin-top: 50px;" class="asset-layout">
+                    
+                    <div class="map-interactive-box" onmousemove="moverTooltip(event)">
+                        <svg viewBox="-50 -50 500 900" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <pattern id="patronReserva" patternUnits="userSpaceOnUse" width="12" height="12">
+                                    <path d="M 0 12 L 12 0" stroke="#81c784" stroke-width="2" opacity="0.4"/>
+                                </pattern>
+                                <filter id="shadow">
+                                    <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
+                                </filter>
+                            </defs>
+
+                            <polygon points="140,800 350,800 350,50 80,150" fill="#fafafa" stroke="#cfd8dc" stroke-width="2" />
+
+                            <text x="215" y="40" class="svg-text label-medida" text-anchor="middle">SUR (ENTRADA): 67.27 m</text>
+                            <text x="360" y="425" class="svg-text label-medida" transform="rotate(90, 360, 425)">ORIENTE: 190.93 m</text>
+                            <text x="70" y="475" class="svg-text label-medida" transform="rotate(-90, 70, 475)">OCCIDENTE: 165.27 m</text>
+                            
+                            <line x1="140" y1="810" x2="350" y2="810" stroke="#0277bd" stroke-width="3" stroke-dasharray="10,5"/>
+                            <text x="245" y="830" class="svg-text label-medida" fill="#0277bd" text-anchor="middle" font-weight="bold">NORTE (ABISMO): 52.20 m</text>
+
+                            <path class="zona fase3" d="M 140,800 L 230,800 L 230,530 L 115,530 Z" filter="url(#shadow)"
+                                  onmouseover="info('FASE 3: HOTEL', 'Frente: 22m | Fondo: 70m', 'Inversión Futura', '$100M', 'Zona exclusiva reducida para cabañas premium. Ubicación estratégica en el borde.')"
+                                  onmouseout="hide()"/>
+                            <text x="160" y="680" class="svg-text label-zona" fill="#0d47a1" transform="rotate(-90, 160, 680)">FASE 3 (70m)</text>
+
+                            <path class="zona fase2" d="M 80,150 L 230,95 L 230,530 L 115,530 L 80,150 Z" filter="url(#shadow)"
+                                  onmouseover="info('FASE 2: REFUGIO COMPLETO', 'Área: ~4.500 m²', 'OPERACIÓN', '$50M (Fase 2)', 'Cubre toda la entrada SUR y zona media. Incluye Restaurante, Escuela, Salón eventos. Sin espacios muertos.')"
+                                  onmouseout="hide()"/>
+                            
+                            <text x="160" y="220" class="svg-text titulo-fase" fill="#bf360c" text-anchor="middle">REFUGIO</text>
+                            <text x="160" y="240" class="svg-text label-zona" fill="#bf360c" font-size="9">ZONA ENTRADA</text>
+                            <text x="150" y="320" class="svg-text" font-size="30">🏫</text>
+                            <text x="150" y="400" class="svg-text" font-size="24">🍽️</text>
+
+                            <rect class="zona fase1-atras" x="230" y="275" width="120" height="130"
+                                  onmouseover="info('LOTE 4: CEIBA', 'Área: ~1.500 m²', 'DISPONIBLE', '$50M', 'Ubicado detrás de los lotes de vista. Colinda con la Gran Fase 2.')"
+                                  onmouseout="hide()"/>
+                            <text x="290" y="340" class="svg-text label-zona" fill="#f57f17">LOTE 4</text>
+
+                            <rect class="zona fase1" x="230" y="405" width="40" height="395" filter="url(#shadow)"
+                                  onmouseover="info('LOTE 1: CASTAÑETO', 'Frente: 10m | Fondo: 100m', 'DISPONIBLE', '$50M', 'Colinda lateralmente con la expansión del Refugio.')"
+                                  onmouseout="hide()"/>
+                            <text x="250" y="750" class="svg-text label-zona" transform="rotate(-90, 250, 750)">LOTE 1</text>
+
+                            <rect class="zona fase1" x="270" y="405" width="40" height="395" filter="url(#shadow)"
+                                  onmouseover="info('LOTE 2: CARACOLÍ', 'Frente: 10m | Fondo: 100m', 'DISPONIBLE', '$50M', 'Lote central de la triada.')"
+                                  onmouseout="hide()"/>
+                            <text x="290" y="750" class="svg-text label-zona" transform="rotate(-90, 290, 750)">LOTE 2</text>
+
+                            <rect class="zona fase1-propio" x="310" y="405" width="40" height="395" filter="url(#shadow)"
+                                  onmouseover="info('LOTE 3: GUAYACÁN', 'Frente: 10m | Fondo: 100m', 'NO DISPONIBLE', 'Propiedad SAS', 'Lote de los socios.')"
+                                  onmouseout="hide()"/>
+                            <text x="330" y="750" class="svg-text label-zona" fill="#e65100" transform="rotate(-90, 330, 750)">PROPIO</text>
+
+                            <path class="zona reserva" d="M 230,95 L 350,50 L 350,275 L 230,275 Z" style="fill: url(#patronReserva);"
+                                  onmouseover="info('RESERVA NATURAL', 'Área Restante', 'VALORIZACIÓN', 'Común', 'Zona de conservación.')"
+                                  onmouseout="hide()"/>
+                            <text x="290" y="160" class="svg-text label-zona" fill="#2e7d32">RESERVA</text>
+                            <text x="310" y="180" class="svg-text" font-size="16">🌳</text>
+
+                            <line x1="115" y1="530" x2="230" y2="530" stroke="#1565c0" stroke-width="1" stroke-dasharray="2,2"/>
+                            <text x="175" y="525" class="svg-text" font-size="9" fill="#1565c0" text-anchor="middle">70m</text>
+
+                            <path d="M 280,30 L 280,60" stroke="#333" stroke-width="3" marker-end="url(#arrow)"/>
+                            <text x="280" y="25" class="svg-text" font-size="10" font-weight="bold" text-anchor="middle">ENTRADA</text>
+
+                        </svg>
+                    </div>
+
+                    <div>
+                        <h3 style="color: white; margin-bottom: 20px;">Contexto Real</h3>
+                        
+                        <div style="text-align: center; margin-bottom: 20px;">
+                             <video autoplay muted loop playsinline style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);">
+                                <source src="elementos/log_amimado.mp4" type="video/mp4">
+                            </video>
+                        </div>
+
+                        <div style="border: 1px solid #333; padding: 5px; margin-bottom: 30px;">
+                            <video autoplay muted loop playsinline style="width: 100%; display: block;">
+                                <source src="elementos/dron.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        
+                        <div style="background: var(--panel-bg); padding: 25px; border-left: 3px solid var(--gold);">
+                            <h4 style="font-size: 1rem; margin-bottom: 15px; color: white;">Estructura Jurídica & Negocio</h4>
+                            
+                            <div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #333;">
+                                <span style="color: var(--gold); font-weight: bold; font-size: 0.9rem;">VEHÍCULO: S.A.S.</span>
+                                <p style="font-size: 0.85rem; color: #aaa; margin-top: 5px; line-height: 1.4;">
+                                    El proyecto se estructura bajo una <strong>Sociedad por Acciones Simplificada</strong>. 
+                                    <br><em>¿Por qué?</em> Es el modelo más moderno y flexible de Colombia. Permite separar el patrimonio personal del empresarial, facilita la entrada de accionistas mediante emisión de acciones y garantiza que <strong>tú eres dueño de una parte real de la empresa</strong> (y por ende, de la tierra y el negocio), no solo un prestamista.
+                                </p>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                
+                                <div>
+                                    <strong style="color: #fbc02d; font-size: 0.9rem;">FASE 1: LA TIERRA (Patrimonio)</strong>
+                                    <p style="font-size: 0.85rem; color: #ccc; margin: 0;">
+                                        <strong>Inversión:</strong> Compra de lotes y adecuación básica.
+                                        <br><strong>Ganancia:</strong> Valorización inmediata (Plusvalía). Al consolidar el terreno y los permisos, el m² sube de precio antes de poner el primer ladrillo.
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <strong style="color: #d84315; font-size: 0.9rem;">FASE 2: EL MOTOR (Flujo de Caja)</strong>
+                                    <p style="font-size: 0.85rem; color: #ccc; margin: 0;">
+                                        <strong>Inversión:</strong> Restaurante, baños, escuela y servicios.
+                                        <br><strong>Ganancia:</strong> Rentabilidad operativa diaria. Aquí entra el dinero de los caminantes (almuerzos, bebidas, pasadías). Es la "caja menor" que sostiene el negocio.
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <strong style="color: #1976d2; font-size: 0.9rem;">FASE 3: EL ACTIVO (High Ticket)</strong>
+                                    <p style="font-size: 0.85rem; color: #ccc; margin: 0;">
+                                        <strong>Inversión:</strong> Alojamiento de Lujo (Glamping/Cabañas).
+                                        <br><strong>Ganancia:</strong> Alto margen por noche ($350k+). Esta fase multiplica la valoración comercial de la empresa completa para una posible venta futura (Exit).
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="viabilidad">
+            <div class="container">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12" style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px;">
+                    
+                    <div class="invest-card">
+                        <h4 style="text-align: center; margin-bottom: 20px;">Distribución de Capital</h4>
+                        <div class="chart-container" style="height: 300px; position: relative;">
+                            <canvas id="investmentChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="calculator-box">
+                        <h3 style="color: white; border-bottom: 1px solid var(--earth); padding-bottom: 10px; margin-bottom: 20px;">Simulador de Retorno</h3>
+                        
+                        <label style="color: #aaa; font-size: 0.9rem;">Inversión Estimada (COP)</label>
+                        <input type="range" id="investInput" min="50" max="500" step="10" value="150" class="calc-range">
+                        <div style="display: flex; justify-content: space-between; color: white; font-weight: bold; font-size: 1.2rem; margin-bottom: 20px;">
+                            <span id="investValue">$150M</span>
+                        </div>
+
+                        <label style="color: #aaa; font-size: 0.9rem;">Precio Promedio Experiencia</label>
+                        <select id="priceSelect" class="calc-input">
+                            <option value="150000">Senderismo Básico ($150k)</option>
+                            <option value="350000" selected>Experiencia Completa ($350k)</option>
+                            <option value="600000">Expedición VIP ($600k)</option>
+                        </select>
+
+                        <div style="background: #222; padding: 15px; border-radius: 8px; margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: center;">
+                            <div>
+                                <div style="font-size: 0.8rem; color: #888;">Punto Equilibrio</div>
+                                <div id="resultBreakeven" style="font-size: 1.5rem; color: var(--earth); font-weight: bold;">12 Pax</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.8rem; color: #888;">ROI Estimado (Año 2)</div>
+                                <div id="resultROI" style="font-size: 1.5rem; color: #4CAF50; font-weight: bold;">18%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="inversion">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 10px;">Modelo por Fases</h2>
+                
+                <div class="invest-grid">
+                    <div class="invest-card">
+                        <div class="phase-tag" style="background: #fbc02d; color: black;">FASE 1</div>
+                        <h3>Lotes Individuales</h3>
+                        <span class="price-tag">$50 M</span>
+                        <p style="margin-bottom: 20px;">Para quien busca propiedad raíz.</p>
+                        <ul class="benefit-list">
+                            <li><strong>Activos:</strong> Lote 1, 2 ó 4 (~1.000m²).</li>
+                            <li><strong>Uso:</strong> Privado o Mixto.</li>
+                            <li><strong>Estado:</strong> Escrituración SAS.</li>
+                        </ul>
+                    </div>
+
+                    <div class="invest-card" style="border-color: #d84315;">
+                        <div class="phase-tag" style="background: #d84315;">FASE 2</div>
+                        <h3>Socio Operativo</h3>
+                        <span class="price-tag">$100 M</span>
+                        <p style="margin-bottom: 20px;">Motor del negocio.</p>
+                        <ul class="benefit-list">
+                            <li><strong>Activos:</strong> Lote Fase 1 + 25% Infraestructura.</li>
+                            <li><strong>Modelo:</strong> Pasadía, Restaurante, Eventos.</li>
+                            <li><strong>Estado:</strong> Estructuración.</li>
+                        </ul>
+                    </div>
+
+                    <div class="invest-card">
+                        <div class="phase-tag" style="background: #1976d2;">FASE 3</div>
+                        <h3>Hotel Premium</h3>
+                        <span class="price-tag">$200 M</span>
+                        <p style="margin-bottom: 20px;">Alto valorización.</p>
+                        <ul class="benefit-list">
+                            <li><strong>Activos:</strong> Todo lo anterior + Cabañas VIP.</li>
+                            <li><strong>Modelo:</strong> Ticket Alto ($350k+).</li>
+                            <li><strong>Vista:</strong> Al Abismo.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer style="background: #000; color: #555; padding: 50px 0; text-align: center; font-size: 0.9rem; border-top: 1px solid #222;">
+            <div class="container">
+                <p style="margin-bottom: 10px; color: #fff;">Operado por <strong>MOT MOT EXPERIENCIAS S.A.S.</strong></p>
+                <p>© 2026 Alshioma Project. Documento Confidencial.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // --- 1. LÓGICA DE PASSWORD ---
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if(input === 'REFUGIOSMOTMOT') {
+                document.getElementById('lock-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                // Disparar gráficos al entrar
+                initCharts();
+                initCanvas();
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        // Permitir Enter para enviar password
+        document.getElementById('passwordInput').addEventListener("keypress", function(event) {
+            if (event.key === "Enter") checkPassword();
+        });
+
+
+        // --- 2. LÓGICA DEL MAPA SVG (TOOLTIP) ---
+        var tooltip = document.getElementById('tooltip');
+        function info(titulo, area, estado, precio, desc) {
+            tooltip.innerHTML = `
+                <h3>${titulo}</h3>
+                <div class="dato"><span class="label">Dimensiones:</span> <span class="valor">${area}</span></div>
+                <div class="dato"><span class="label">Estado:</span> <span class="valor" style="color:${(estado=='DISPONIBLE'||estado=='Inversión Futura')?'#2E7D32':(estado=='OPERACIÓN'?'#d84315':'#c62828')}">${estado}</span></div>
+                <p class="desc">${desc}</p>
+                <span class="precio">${precio}</span>
+            `;
+            tooltip.style.display = 'block';
+        }
+        function hide() { tooltip.style.display = 'none'; }
+        function moverTooltip(e) {
+            var x = e.clientX; var y = e.clientY;
+            var rect = tooltip.getBoundingClientRect();
+            var left = x + 20;
+            if (left + rect.width > window.innerWidth) left = x - rect.width - 20;
+            tooltip.style.left = left + 'px'; tooltip.style.top = (y + 10) + 'px';
+        }
+
+        // --- 3. GRÁFICOS (Chart.js) ---
+        function initCharts() {
+            // Mercado
+            new Chart(document.getElementById('marketChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['2022', '2023', '2024', '2025 (Proy)'],
+                    datasets: [{
+                        label: 'Crecimiento Turistas',
+                        data: [62, 85, 110, 145],
+                        backgroundColor: '#FF5722',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: '#333' }, ticks: { color: '#888' } },
+                        x: { grid: { display: false }, ticks: { color: '#888' } }
+                    }
+                }
+            });
+
+            // Inversión (Dona)
+            new Chart(document.getElementById('investmentChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Tierra', 'Refugio', 'Legal', 'Capital'],
+                    datasets: [{
+                        data: [40, 30, 15, 15],
+                        backgroundColor: ['#8B4513', '#D2691E', '#CD853F', '#555'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'right', labels: { color: '#ccc' } } },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        // --- 4. CANVAS RUTA (Visualización Dark) ---
+        function initCanvas() {
+            const canvas = document.getElementById('routeCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = 400;
+
+            const points = [
+                {x: 50, y: 350, name: 'Villanueva'},
+                {x: 150, y: 250, name: 'Alto de Marta'},
+                {x: 300, y: 180, name: 'REFUGIO ALSHIOMA (Aquí)'},
+                {x: 500, y: 300, name: 'Jordán'}
+            ];
+
+            // Fondo
+            const grd = ctx.createLinearGradient(0, 0, 0, 400);
+            grd.addColorStop(0, '#222'); grd.addColorStop(1, '#000');
+            ctx.fillStyle = grd; ctx.fillRect(0,0, canvas.width, 400);
+
+            // Montaña
+            ctx.beginPath();
+            ctx.moveTo(0, 400);
+            points.forEach(p => ctx.lineTo(p.x, p.y));
+            ctx.lineTo(canvas.width, 400);
+            ctx.fillStyle = '#1E1E1E';
+            ctx.fill();
+
+            // Línea
+            ctx.beginPath();
+            points.forEach((p, i) => { if(i==0) ctx.moveTo(p.x,p.y); else ctx.lineTo(p.x,p.y); });
+            ctx.strokeStyle = '#FF5722'; ctx.lineWidth = 3; ctx.stroke();
+
+            // Puntos
+            points.forEach(p => {
+                ctx.beginPath(); ctx.arc(p.x, p.y, 6, 0, Math.PI*2);
+                ctx.fillStyle = '#FFD700'; ctx.fill();
+                ctx.fillStyle = '#fff'; ctx.font = "12px Arial"; ctx.fillText(p.name, p.x-20, p.y-15);
+            });
+        }
+
+        // --- 5. CALCULADORA ---
+        const investInput = document.getElementById('investInput');
+        const priceSelect = document.getElementById('priceSelect');
+        const investValueDisplay = document.getElementById('investValue');
+        const resultBreakeven = document.getElementById('resultBreakeven');
+        const resultROI = document.getElementById('resultROI');
+
+        function updateCalculator() {
+            const investment = parseInt(investInput.value) * 1000000;
+            const price = parseInt(priceSelect.value);
+            const margin = price * 0.35;
+            const fixedCosts = 5000000; // Costo fijo mensual supuesto
+            
+            const breakeven = Math.ceil(fixedCosts / margin);
+            // Proyección simple ROI año 2 (con 600 pax/año)
+            const profit = (600 * margin) - (fixedCosts * 12);
+            const roi = ((profit / investment) * 100).toFixed(1);
+
+            investValueDisplay.textContent = `$${investInput.value}M`;
+            resultBreakeven.textContent = `${breakeven} Pax/Mes`;
+            resultROI.textContent = roi > 0 ? `+${roi}%` : `${roi}%`;
+            resultROI.style.color = roi > 0 ? '#4CAF50' : '#F44336';
+        }
+
+        investInput.addEventListener('input', updateCalculator);
+        priceSelect.addEventListener('change', updateCalculator);
+
+    </script>
+</body>
+</html>
