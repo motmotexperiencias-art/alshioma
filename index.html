@@ -14,6 +14,7 @@
         body {
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
         .hero-gradient {
@@ -40,15 +41,17 @@
             transition: all 0.3s ease;
         }
 
-        .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        @media (min-width: 768px) {
+            .glass-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            }
         }
 
         .map-container {
             position: relative;
             width: 100%;
-            padding-bottom: 75%;
+            padding-bottom: 75%; /* Ratio 4:3 */
             height: 0;
             overflow: hidden;
             border-radius: 1.5rem;
@@ -61,130 +64,145 @@
         }
 
         .section-tag {
-            font-size: 0.65rem;
-            letter-spacing: 0.4em;
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
             font-weight: 900;
             text-transform: uppercase;
             color: #2563eb;
             margin-bottom: 1rem;
             display: block;
         }
+        
+        @media (min-width: 768px) {
+            .section-tag {
+                font-size: 0.65rem;
+                letter-spacing: 0.4em;
+            }
+        }
+
+        /* Ajuste para evitar desbordamiento de texto largo */
+        .break-word {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
 
     <!-- Navegación -->
-    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-4">
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 px-4 md:px-6 py-3 md:py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
-                    <i data-lucide="mountain" class="text-white w-5 h-5"></i>
+            <div class="flex items-center gap-2 md:gap-3">
+                <div class="w-7 h-7 md:w-8 md:h-8 bg-slate-900 rounded-lg flex items-center justify-center">
+                    <i data-lucide="mountain" class="text-white w-4 h-4 md:w-5 md:h-5"></i>
                 </div>
-                <span class="font-black text-xl tracking-tighter uppercase">ALSHIOMA</span>
+                <span class="font-black text-lg md:text-xl tracking-tighter uppercase">ALSHIOMA</span>
             </div>
-            <a href="#inventario" class="bg-blue-600 text-white px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition-colors">
-                Invertir Ahora
+            <a href="#inventario" class="bg-blue-600 text-white px-4 md:px-5 py-2 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition-colors">
+                Invertir
             </a>
         </div>
     </nav>
 
-    <!-- HERO: El Llamado -->
+    <!-- HERO -->
     <header class="hero-gradient min-h-screen flex items-center justify-center text-center px-6 relative">
         <div class="max-w-4xl pt-20">
-            <span class="section-tag text-blue-400">Visión Internacional • Trayectoria • Resultados</span>
-            <h1 class="text-7xl md:text-9xl font-black text-white mb-8 tracking-tighter italic uppercase">ALSHIOMA</h1>
-            <p class="text-xl md:text-2xl text-slate-300 font-light leading-relaxed mb-10 max-w-2xl mx-auto">
-                Bienvenido a una oportunidad de inversión sólida en el corazón de Santander liderada por <strong>Mot Mot Experiencias</strong>.
+            <span class="section-tag text-blue-400">Visión • Trayectoria • Resultados</span>
+            <h1 class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white mb-6 md:mb-8 tracking-tighter italic uppercase leading-none break-word">
+                ALSHIOMA
+            </h1>
+            <p class="text-lg md:text-2xl text-slate-300 font-light leading-relaxed mb-10 max-w-2xl mx-auto">
+                Oportunidad de inversión sólida en el corazón de Santander liderada por <strong>Mot Mot Experiencias</strong>.
             </p>
-            <div class="flex flex-col md:flex-row justify-center gap-4">
-                <a href="#tesis" class="bg-white text-slate-900 px-10 py-4 rounded-full font-black uppercase text-xs tracking-widest hover:bg-blue-50 transition-all">
+            <div class="flex flex-col sm:flex-row justify-center gap-4 px-4 sm:px-0">
+                <a href="#tesis" class="bg-white text-slate-900 px-8 md:px-10 py-4 rounded-full font-black uppercase text-xs tracking-widest hover:bg-blue-50 transition-all text-center">
                     Descubrir Proyecto
                 </a>
             </div>
         </div>
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 scroll-indicator">
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 scroll-indicator hidden sm:block">
             <i data-lucide="chevron-down" class="text-white/50 w-8 h-8"></i>
         </div>
     </header>
 
-    <!-- EL MOMENTO: Geoparque -->
-    <section id="tesis" class="py-24 px-6 bg-white">
+    <!-- EL MOMENTO -->
+    <section id="tesis" class="py-16 md:py-24 px-6 bg-white">
         <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 <div>
                     <span class="section-tag">Contexto Regional</span>
-                    <h2 class="text-4xl md:text-5xl font-black italic uppercase tracking-tighter mb-6 leading-none">El Momento de Santander</h2>
-                    <p class="text-slate-600 text-lg leading-relaxed mb-8">
+                    <h2 class="text-3xl md:text-5xl font-black italic uppercase tracking-tighter mb-6 leading-tight">El Momento de Santander</h2>
+                    <p class="text-slate-600 text-base md:text-lg leading-relaxed mb-8">
                         La candidatura al <strong>Geoparque UNESCO</strong> valida la viabilidad de adquirir un punto estratégico en el Cañón del Chicamocha. No solo invertimos en tierra, invertimos en un activo de talla mundial.
                     </p>
-                    <div class="grid grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div class="border-l-4 border-blue-600 pl-4">
-                            <span class="block text-3xl font-black tracking-tighter">TOP 3</span>
-                            <span class="text-[10px] font-bold uppercase text-slate-400 tracking-widest">Destinos Naturaleza (Procolombia)</span>
+                            <span class="block text-2xl md:text-3xl font-black tracking-tighter">TOP 3</span>
+                            <span class="text-[9px] md:text-[10px] font-bold uppercase text-slate-400 tracking-widest leading-tight block">Destinos Naturaleza (Procolombia)</span>
                         </div>
                         <div class="border-l-4 border-emerald-500 pl-4">
-                            <span class="block text-3xl font-black tracking-tighter">+13.4%</span>
-                            <span class="text-[10px] font-bold uppercase text-slate-400 tracking-widest">Crecimiento Turistas Extranjeros</span>
+                            <span class="block text-2xl md:text-3xl font-black tracking-tighter">+13.4%</span>
+                            <span class="text-[9px] md:text-[10px] font-bold uppercase text-slate-400 tracking-widest leading-tight block">Crecimiento Turistas Extranjeros</span>
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-slate-100 p-8 rounded-[2rem] aspect-square flex flex-col justify-end group hover:bg-slate-900 hover:text-white transition-all">
-                        <i data-lucide="globe" class="mb-4 w-8 h-8 text-blue-600"></i>
-                        <h4 class="font-black uppercase text-sm mb-2">Validación UNESCO</h4>
-                        <p class="text-xs opacity-70">Protección internacional que garantiza la exclusividad del territorio.</p>
+                <div class="grid grid-cols-2 gap-3 md:gap-4">
+                    <div class="bg-slate-100 p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] aspect-square flex flex-col justify-end group hover:bg-slate-900 hover:text-white transition-all">
+                        <i data-lucide="globe" class="mb-3 md:mb-4 w-6 h-6 md:w-8 md:h-8 text-blue-600"></i>
+                        <h4 class="font-black uppercase text-[10px] md:text-sm mb-1 md:mb-2">Validación UNESCO</h4>
+                        <p class="text-[9px] md:text-xs opacity-70 leading-tight">Protección internacional y exclusividad.</p>
                     </div>
-                    <div class="bg-blue-600 p-8 rounded-[2rem] aspect-square flex flex-col justify-end text-white">
-                        <i data-lucide="trending-up" class="mb-4 w-8 h-8"></i>
-                        <h4 class="font-black uppercase text-sm mb-2">Arbitraje</h4>
-                        <p class="text-xs opacity-80">Precio por m² competitivo frente a la saturación de Barichara.</p>
+                    <div class="bg-blue-600 p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] aspect-square flex flex-col justify-end text-white">
+                        <i data-lucide="trending-up" class="mb-3 md:mb-4 w-6 h-6 md:w-8 md:h-8"></i>
+                        <h4 class="font-black uppercase text-[10px] md:text-sm mb-1 md:mb-2">Arbitraje</h4>
+                        <p class="text-[9px] md:text-xs opacity-80 leading-tight">Precio m² competitivo vs Barichara.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- LA TESIS: El Problema y la Solución -->
-    <section class="py-24 px-6 bg-slate-900 text-white overflow-hidden">
+    <!-- LA TESIS -->
+    <section class="py-16 md:py-24 px-6 bg-slate-900 text-white overflow-hidden">
         <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-20">
+            <div class="text-center mb-12 md:mb-20">
                 <span class="section-tag text-blue-400">¿Por qué invertir ahora?</span>
-                <h2 class="text-4xl md:text-6xl font-black italic uppercase tracking-tighter mb-8">La Brecha del Mercado</h2>
-                <div class="h-1 w-24 bg-blue-600 mx-auto"></div>
+                <h2 class="text-3xl md:text-6xl font-black italic uppercase tracking-tighter mb-6 md:mb-8">La Brecha del Mercado</h2>
+                <div class="h-1 w-16 md:w-24 bg-blue-600 mx-auto"></div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-                <div class="space-y-8">
-                    <p class="text-xl text-slate-300 font-light leading-relaxed">
-                        "Mientras que Barichara presenta signos de saturación, el corredor <strong>Villanueva-Jordán</strong> posee una conectividad superior y el descenso de senderismo más espectacular de los Andes orientales."
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-start">
+                <div class="space-y-6 md:space-y-8">
+                    <p class="text-lg md:text-xl text-slate-300 font-light leading-relaxed">
+                        "Mientras que Barichara presenta signos de saturación, el corredor <strong>Villanueva-Jordán</strong> posee una conectividad superior y el descenso de senderismo más espectacular."
                     </p>
-                    <div class="bg-white/5 p-8 rounded-3xl border border-white/10">
-                        <h4 class="text-blue-400 font-black uppercase text-xs tracking-widest mb-4">El Problema</h4>
-                        <p class="text-sm text-slate-400 italic">
-                            La oferta es deficitaria, obligando al caminante a travesías logísticamente complejas con pocos puntos de pernocta de calidad.
+                    <div class="bg-white/5 p-6 md:p-8 rounded-2xl md:rounded-3xl border border-white/10">
+                        <h4 class="text-blue-400 font-black uppercase text-[10px] tracking-widest mb-3">El Problema</h4>
+                        <p class="text-xs md:text-sm text-slate-400 italic">
+                            La oferta es deficitaria, obligando al caminante a travesías complejas con pocos puntos de pernocta de calidad.
                         </p>
                     </div>
                 </div>
-                <div class="space-y-6">
+                <div class="space-y-4 md:space-y-6">
                     <div class="flex gap-4 items-start">
-                        <div class="w-12 h-12 rounded-full bg-blue-600 flex-shrink-0 flex items-center justify-center font-black">1</div>
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-600 flex-shrink-0 flex items-center justify-center font-black text-sm md:text-base">1</div>
                         <div>
-                            <h5 class="font-black uppercase text-sm mb-1 tracking-tight">Nodo Estratégico</h5>
-                            <p class="text-xs text-slate-400">Nos posicionamos en el punto exacto donde el flujo de caminantes requiere recuperación.</p>
+                            <h5 class="font-black uppercase text-xs md:text-sm mb-1 tracking-tight">Nodo Estratégico</h5>
+                            <p class="text-[10px] md:text-xs text-slate-400">Punto exacto donde el flujo de caminantes requiere recuperación.</p>
                         </div>
                     </div>
                     <div class="flex gap-4 items-start">
-                        <div class="w-12 h-12 rounded-full bg-emerald-600 flex-shrink-0 flex items-center justify-center font-black">2</div>
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-emerald-600 flex-shrink-0 flex items-center justify-center font-black text-sm md:text-base">2</div>
                         <div>
-                            <h5 class="font-black uppercase text-sm mb-1 tracking-tight">Cultura Regenerativa</h5>
-                            <p class="text-xs text-slate-400">No es solo hotelería, es un laboratorio vivo de turismo que sana el territorio.</p>
+                            <h5 class="font-black uppercase text-xs md:text-sm mb-1 tracking-tight">Cultura Regenerativa</h5>
+                            <p class="text-[10px] md:text-xs text-slate-400">Laboratorio vivo de turismo que sana el territorio.</p>
                         </div>
                     </div>
                     <div class="flex gap-4 items-start">
-                        <div class="w-12 h-12 rounded-full bg-amber-600 flex-shrink-0 flex items-center justify-center font-black">3</div>
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-amber-600 flex-shrink-0 flex items-center justify-center font-black text-sm md:text-base">3</div>
                         <div>
-                            <h5 class="font-black uppercase text-sm mb-1 tracking-tight">Cero saturación</h5>
-                            <p class="text-xs text-slate-400">Precios de entrada de tierra accesible con valorización proyectada del +15%.</p>
+                            <h5 class="font-black uppercase text-xs md:text-sm mb-1 tracking-tight">Cero saturación</h5>
+                            <p class="text-[10px] md:text-xs text-slate-400">Valorización proyectada del +15% anual.</p>
                         </div>
                     </div>
                 </div>
@@ -192,150 +210,116 @@
         </div>
     </section>
 
-    <!-- TRAYECTORIA: El Mentor (Mot Mot) -->
-    <section class="py-24 px-6 bg-white">
+    <!-- TRAYECTORIA -->
+    <section class="py-16 md:py-24 px-6 bg-white">
         <div class="max-w-7xl mx-auto text-center">
             <span class="section-tag">Trayectoria y Filosofía</span>
-            <h2 class="text-4xl md:text-5xl font-black italic uppercase tracking-tighter mb-16">Mot Mot Experiencias</h2>
+            <h2 class="text-3xl md:text-5xl font-black italic uppercase tracking-tighter mb-12 md:mb-16">Mot Mot Experiencias</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-10 bg-slate-50 rounded-[3rem] border border-slate-100">
-                    <div class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-6">
-                        <i data-lucide="shield" class="text-blue-600"></i>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <div class="p-8 md:p-10 bg-slate-50 rounded-[2rem] md:rounded-[3rem] border border-slate-100">
+                    <div class="w-12 h-12 md:w-16 md:h-16 bg-white rounded-xl md:rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="shield" class="text-blue-600 w-6 h-6"></i>
                     </div>
-                    <h4 class="font-black uppercase text-sm mb-4 tracking-tighter">5 Años de Tracción</h4>
-                    <p class="text-xs text-slate-500 leading-relaxed italic">Construyendo tejido social y conexión territorial real en Santander.</p>
+                    <h4 class="font-black uppercase text-xs md:text-sm mb-4 tracking-tighter">5 Años de Tracción</h4>
+                    <p class="text-[10px] md:text-xs text-slate-500 leading-relaxed italic">Construyendo tejido social y conexión territorial real en Santander.</p>
                 </div>
-                <div class="p-10 bg-slate-900 text-white rounded-[3rem] shadow-xl transform scale-105 z-10">
-                    <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white">
-                        <i data-lucide="book-open"></i>
+                <div class="p-8 md:p-10 bg-slate-900 text-white rounded-[2rem] md:rounded-[3rem] shadow-xl md:scale-105 z-10">
+                    <div class="w-12 h-12 md:w-16 md:h-16 bg-white/10 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-6 text-white">
+                        <i data-lucide="book-open" class="w-6 h-6"></i>
                     </div>
-                    <h4 class="font-black uppercase text-sm mb-4 tracking-tighter">Escuela de Caminantes</h4>
-                    <p class="text-xs text-slate-400 leading-relaxed italic">Estandarizamos protocolos de sostenibilidad y regeneración turística.</p>
+                    <h4 class="font-black uppercase text-xs md:text-sm mb-4 tracking-tighter">Escuela de Caminantes</h4>
+                    <p class="text-[10px] md:text-xs text-slate-400 leading-relaxed italic">Estandarizamos protocolos de sostenibilidad y regeneración turística.</p>
                 </div>
-                <div class="p-10 bg-slate-50 rounded-[3rem] border border-slate-100">
-                    <div class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-6 text-blue-600">
-                        <i data-lucide="users"></i>
+                <div class="p-8 md:p-10 bg-slate-50 rounded-[2rem] md:rounded-[3rem] border border-slate-100">
+                    <div class="w-12 h-12 md:w-16 md:h-16 bg-white rounded-xl md:rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-6 text-blue-600">
+                        <i data-lucide="users" class="w-6 h-6"></i>
                     </div>
-                    <h4 class="font-black uppercase text-sm mb-4 tracking-tighter">Caminantes del Presente</h4>
-                    <p class="text-xs text-slate-500 leading-relaxed italic">Base de clientes fidelizada que valora la autenticidad irrestricta.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- MASTER PLAN PESTEL (NUDO) -->
-    <section class="py-24 px-6 bg-slate-50">
-        <div class="max-w-6xl mx-auto">
-            <div class="mb-16 text-center">
-                <span class="section-tag">Zonificación & Viabilidad</span>
-                <h2 class="text-5xl font-black italic uppercase tracking-tighter">El Plan Maestro</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="glass-card p-8 rounded-[2.5rem]">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i data-lucide="landmark" class="text-blue-600 w-5 h-5"></i>
-                        <h4 class="font-black uppercase text-xs tracking-widest">Político</h4>
-                    </div>
-                    <p class="text-xs text-slate-600 leading-relaxed italic">Alianza estratégica "De los Alpes a los Andes" (Francia-Colombia). Mot Mot como ejecutor ideal.</p>
-                </div>
-                <div class="glass-card p-8 rounded-[2.5rem]">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i data-lucide="zap" class="text-amber-500 w-5 h-5"></i>
-                        <h4 class="font-black uppercase text-xs tracking-widest">Tecnológico</h4>
-                    </div>
-                    <p class="text-xs text-slate-600 leading-relaxed italic">Modelo energético mixto fotovoltaico viable (Celsia Solar) e Internet para nómadas.</p>
-                </div>
-                <div class="glass-card p-8 rounded-[2.5rem]">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i data-lucide="tree-pine" class="text-emerald-600 w-5 h-5"></i>
-                        <h4 class="font-black uppercase text-xs tracking-widest">Ambiental</h4>
-                    </div>
-                    <p class="text-xs text-slate-600 leading-relaxed italic">Normativa DRMI estricta que garantiza exclusividad y protege contra megaproyectos.</p>
+                    <h4 class="font-black uppercase text-xs md:text-sm mb-4 tracking-tighter">Caminantes del Presente</h4>
+                    <p class="text-[10px] md:text-xs text-slate-500 leading-relaxed italic">Base de clientes fidelizada que valora la autenticidad irrestricta.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- INVENTARIO: El Desenlace -->
-    <section id="inventario" class="py-24 px-6 bg-white">
+    <!-- INVENTARIO -->
+    <section id="inventario" class="py-16 md:py-24 px-4 md:px-6 bg-white">
         <div class="max-w-7xl mx-auto">
-            <div class="mb-16">
+            <div class="mb-12 text-center md:text-left px-2">
                 <span class="section-tag">Oportunidades de Entrada</span>
-                <h2 class="text-5xl font-black italic uppercase tracking-tighter">Inventario de Activos</h2>
-                <p class="text-slate-500 mt-2 font-bold uppercase text-[10px] tracking-widest">Haz clic en los mapas para explorar el terreno</p>
+                <h2 class="text-3xl md:text-5xl font-black italic uppercase tracking-tighter leading-tight">Inventario de Activos</h2>
+                <p class="text-slate-500 mt-2 font-bold uppercase text-[9px] md:text-[10px] tracking-widest">Toca los mapas para explorar el terreno</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10">
                 <!-- Lote Vista -->
-                <div class="group bg-white rounded-[2.5rem] border border-slate-200 shadow-xl overflow-hidden flex flex-col">
-                    <div class="p-4">
+                <div class="group bg-white rounded-[2rem] md:rounded-[2.5rem] border border-slate-200 shadow-lg overflow-hidden flex flex-col">
+                    <div class="p-3 md:p-4">
                         <div class="map-container">
                             <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1rFHs-8q5Od5By4ytp-txtODFBLKcaFQ&ehbc=2E312F"></iframe>
                         </div>
                     </div>
-                    <div class="p-8 pt-0 flex-grow">
+                    <div class="p-6 md:p-8 pt-0 flex-grow">
                         <div class="flex justify-between items-start mb-4">
                             <div>
-                                <h3 class="text-2xl font-black tracking-tight uppercase leading-none">EL BALCÓN</h3>
-                                <p class="text-[10px] font-bold uppercase text-emerald-600 tracking-widest mt-2">1.500 m² • VISTA CAÑÓN</p>
+                                <h3 class="text-xl md:text-2xl font-black tracking-tight uppercase leading-none">EL BALCÓN</h3>
+                                <p class="text-[9px] md:text-[10px] font-bold uppercase text-emerald-600 tracking-widest mt-2">1.500 m² • VISTA CAÑÓN</p>
                             </div>
-                            <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-[9px] font-black uppercase">Premium</span>
+                            <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-[8px] font-black uppercase">Premium</span>
                         </div>
-                        <p class="text-sm text-slate-500 italic mb-6">Ubicado estratégicamente en el borde del cañón para un eco-refugio de lujo.</p>
-                        <div class="text-3xl font-black tracking-tighter text-slate-900 mb-8">$202.500.000</div>
-                        <button class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black uppercase text-xs tracking-widest group-hover:bg-blue-600 transition-colors">Solicitar Dossier</button>
+                        <p class="text-xs md:text-sm text-slate-500 italic mb-6">Ubicado estratégicamente en el borde del cañón para un eco-refugio de lujo.</p>
+                        <div class="text-2xl md:text-3xl font-black tracking-tighter text-slate-900 mb-6 md:mb-8">$202.500.000</div>
+                        <button class="w-full bg-slate-900 text-white py-4 rounded-xl md:rounded-2xl font-black uppercase text-[10px] tracking-widest transition-colors active:scale-95 md:group-hover:bg-blue-600">Solicitar Dossier</button>
                     </div>
                 </div>
 
                 <!-- Lote Bosque -->
-                <div class="group bg-white rounded-[2.5rem] border border-slate-200 shadow-xl overflow-hidden flex flex-col">
-                    <div class="p-4">
+                <div class="group bg-white rounded-[2rem] md:rounded-[2.5rem] border border-slate-200 shadow-lg overflow-hidden flex flex-col">
+                    <div class="p-3 md:p-4">
                         <div class="map-container">
                             <iframe src="https://www.google.com/maps/d/u/0/embed?mid=10dmI-w9K2btFCkF3Vo5Ux2Ymj7wO3nQ&ehbc=2E312F"></iframe>
                         </div>
                     </div>
-                    <div class="p-8 pt-0 flex-grow">
+                    <div class="p-6 md:p-8 pt-0 flex-grow">
                         <div class="flex justify-between items-start mb-4">
                             <div>
-                                <h3 class="text-2xl font-black tracking-tight uppercase leading-none">EL OASIS</h3>
-                                <p class="text-[10px] font-bold uppercase text-amber-600 tracking-widest mt-2">1.500 m² • BOSQUE NATIVO</p>
+                                <h3 class="text-xl md:text-2xl font-black tracking-tight uppercase leading-none">EL OASIS</h3>
+                                <p class="text-[9px] md:text-[10px] font-bold uppercase text-amber-600 tracking-widest mt-2">1.500 m² • BOSQUE NATIVO</p>
                             </div>
-                            <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-[9px] font-black uppercase">Reserva</span>
+                            <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-[8px] font-black uppercase">Reserva</span>
                         </div>
-                        <p class="text-sm text-slate-500 italic mb-6">Refugio de biodiversidad con microclima propio y privacidad absoluta.</p>
-                        <div class="text-3xl font-black tracking-tighter text-slate-900 mb-8">$127.500.000</div>
-                        <button class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black uppercase text-xs tracking-widest group-hover:bg-amber-600 transition-colors">Solicitar Dossier</button>
+                        <p class="text-xs md:text-sm text-slate-500 italic mb-6">Refugio de biodiversidad con microclima propio y privacidad absoluta.</p>
+                        <div class="text-2xl md:text-3xl font-black tracking-tighter text-slate-900 mb-6 md:mb-8">$127.500.000</div>
+                        <button class="w-full bg-slate-900 text-white py-4 rounded-xl md:rounded-2xl font-black uppercase text-[10px] tracking-widest transition-colors active:scale-95 md:group-hover:bg-amber-600">Solicitar Dossier</button>
                     </div>
                 </div>
 
                 <!-- Lote Grande Vista -->
-                <div class="group bg-white rounded-[2.5rem] border border-slate-200 shadow-xl overflow-hidden flex flex-col border-2 border-blue-600 relative">
-                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest z-10">Más Solicitado</div>
-                    <div class="p-4">
+                <div class="group bg-white rounded-[2rem] md:rounded-[2.5rem] border-2 border-blue-600 shadow-xl overflow-hidden flex flex-col relative">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest z-10">Más Solicitado</div>
+                    <div class="p-3 md:p-4">
                         <div class="map-container">
                             <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1OlVyOhPO66cMxYm8ajIfjK4D_TMo6o0&ehbc=2E312F"></iframe>
                         </div>
                     </div>
-                    <div class="p-8 pt-0 flex-grow">
+                    <div class="p-6 md:p-8 pt-0 flex-grow">
                         <div class="flex justify-between items-start mb-4">
                             <div>
-                                <h3 class="text-2xl font-black tracking-tight uppercase leading-none">EL DIAMANTE</h3>
-                                <p class="text-[10px] font-bold uppercase text-blue-600 tracking-widest mt-2">2.500 m² • GRAN LOTE VISTA</p>
+                                <h3 class="text-xl md:text-2xl font-black tracking-tight uppercase leading-none">EL DIAMANTE</h3>
+                                <p class="text-[9px] md:text-[10px] font-bold uppercase text-blue-600 tracking-widest mt-2">2.500 m² • GRAN LOTE VISTA</p>
                             </div>
                         </div>
-                        <p class="text-sm text-slate-500 italic mb-6">Asentado sobre placa de roca masiva. El activo más versátil del Master Plan.</p>
-                        <div class="text-3xl font-black tracking-tighter text-slate-900 mb-8">$287.500.000</div>
-                        <button class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-blue-700 transition-colors">Contactar Asesor</button>
+                        <p class="text-xs md:text-sm text-slate-500 italic mb-6">Asentado sobre placa de roca masiva. El activo más versátil del Master Plan.</p>
+                        <div class="text-2xl md:text-3xl font-black tracking-tighter text-slate-900 mb-6 md:mb-8">$287.500.000</div>
+                        <button class="w-full bg-blue-600 text-white py-4 rounded-xl md:rounded-2xl font-black uppercase text-[10px] tracking-widest transition-colors active:scale-95 hover:bg-blue-700">Contactar Asesor</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER: El Cierre -->
-    <footer class="bg-slate-900 text-white py-20 px-6">
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-white py-16 md:py-20 px-6">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
                 <div class="max-w-md">
@@ -349,20 +333,20 @@
                         "Entendemos el acto de caminar no como un deporte, sino como una herramienta de construcción de tejido social y salud preventiva."
                     </p>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-12">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 w-full md:w-auto">
                     <div>
-                        <h5 class="text-[10px] font-black uppercase tracking-widest text-blue-400 mb-6">Contacto</h5>
+                        <h5 class="text-[10px] font-black uppercase tracking-widest text-blue-400 mb-4 md:mb-6">Contacto</h5>
                         <p class="text-xs text-slate-300 mb-2">Villanueva, Santander</p>
                         <p class="text-xs text-slate-300">hola@motmot.com</p>
                     </div>
                     <div>
-                        <h5 class="text-[10px] font-black uppercase tracking-widest text-blue-400 mb-6">Trayectoria</h5>
+                        <h5 class="text-[10px] font-black uppercase tracking-widest text-blue-400 mb-4 md:mb-6">Proyecto</h5>
                         <p class="text-xs text-slate-300 mb-2">5 Años de Impacto</p>
                         <p class="text-xs text-slate-300">Geoparque UNESCO</p>
                     </div>
                 </div>
             </div>
-            <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+            <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-500 text-center md:text-left">
                 <p>© 2026 ALSHIOMA • Mot Mot Experiencias</p>
                 <p>Caminantes del Presente</p>
             </div>
